@@ -1,0 +1,10 @@
+data
+IIC
+models
+notebooks
+wandb
+.idea
+__pycache__
+concept.txt
+mobile net.pdf
+requirements.txt
