@@ -57,6 +57,7 @@ import matplotlib.pyplot as plt
 #     return dataset
 
 
+
 # %%
 
 # Generate artifical graph dataset with DGL
@@ -154,6 +155,7 @@ class ExcitationGCN(nn.Module):
             ExcitationGCN_layer(hidden_dim, hidden_dim) for _ in range(L)
         ])
         self.MLP_layer = gated_gcn.MLP_layer(hidden_dim, output_dim)
+        self.softmax = torch.nn.Softmax(dim=1)
 
     def forward(self, g, X, E, snorm_n, snorm_e):
         # input embedding
@@ -168,6 +170,7 @@ class ExcitationGCN(nn.Module):
         g.ndata['H'] = H
         y = dgl.mean_nodes(g, 'H')
         y = self.MLP_layer(y)
+        y = self.softmax(y)
 
         return y
 
@@ -225,6 +228,7 @@ class ExcitationGCN(nn.Module):
 # batch_X = batch_graphs.ndata['feat']
 # batch_E = batch_graphs.edata['feat']
 
+
 # %%
 
 # Checking some sizes
@@ -238,7 +242,7 @@ class ExcitationGCN(nn.Module):
 #
 # batch_scores = model(batch_graphs, batch_X, batch_E, batch_snorm_n, batch_snorm_e)
 # print(batch_scores.size())
-#
+
 # batch_labels = batch_labels
 # print(f'accuracy: {accuracy(batch_scores, batch_labels)}')
 
